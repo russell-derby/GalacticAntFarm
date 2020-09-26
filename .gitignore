@@ -1,32 +1,14 @@
-# Prerequisites
-*.d
+# Ignore everything.  We'll whitelist what we want to pull in.
+/*
+/*/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Git meta files
+!.gitignore
+!.gitattributes
+!README.md
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# Whitelisted directories/files
+!/ProjectSettings/
+!/Assets/                # Add Assets folder, but ...
+/Assets/*                # Remove everything under Assets again.
+!/Assets/Scripts         # Add Scripts folder
