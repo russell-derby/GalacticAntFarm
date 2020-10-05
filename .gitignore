@@ -1,6 +1,5 @@
 # Ignore everything.  We'll whitelist what we want to pull in.
 /*
-# test
 
 # Git meta files
 !.gitignore
@@ -8,5 +7,18 @@
 !README.md
 
 # Whitelisted directories/files
-!/ProjectSettings/       # Add ProjectSettings folder
-!/Assets/               # Add Assets Folder
+!/ProjectSettings/
+#!/Assets/
+!/Assets/
+
+
+# Blacklisted extensions
+### files
+*.png
+*.jpg
+
+### unity files
+*.unity
+*.meta
+*.prefab
+
