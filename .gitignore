@@ -1,5 +1,6 @@
 # Ignore everything.  We'll whitelist what we want to pull in.
 /*
+# test
 
 # Git meta files
 !.gitignore
@@ -8,4 +9,4 @@
 
 # Whitelisted directories/files
 !/ProjectSettings/       # Add ProjectSettings folder
-!/Assets/*               # Add Assets Folder
+!/Assets/               # Add Assets Folder
