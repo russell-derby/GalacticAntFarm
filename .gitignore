@@ -8,7 +8,5 @@
 !README.md
 
 # Whitelisted directories/files
-!/ProjectSettings/
-!/Assets/                # Add Assets folder, but ...
-/Assets/*                # Remove everything under Assets again.
+!/ProjectSettings/       # Add ProjectSettings folder
 !/Assets/Scripts         # Add Scripts folder
