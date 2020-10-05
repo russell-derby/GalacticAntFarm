@@ -1,0 +1,14 @@
+# Ignore everything.  We'll whitelist what we want to pull in.
+/*
+/*/
+
+# Git meta files
+!.gitignore
+!.gitattributes
+!README.md
+
+# Whitelisted directories/files
+!/ProjectSettings/
+!/Assets/                # Add Assets folder, but ...
+/Assets/*                # Remove everything under Assets again.
+!/Assets/Scripts         # Add Scripts folder
