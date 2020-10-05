@@ -8,7 +8,6 @@
 
 # Whitelisted directories/files
 !/ProjectSettings/
-#!/Assets/
 !/Assets/
 
 
@@ -21,4 +20,3 @@
 *.unity
 *.meta
 *.prefab
-
