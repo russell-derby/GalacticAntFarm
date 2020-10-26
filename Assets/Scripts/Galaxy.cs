@@ -9,12 +9,15 @@ public class Galaxy : MonoBehaviour
     public int debugOut = 2;
 
     // parent objects
-    public GameObject _pathsParent;
-    public GameObject _lifeformsParent;
-    public GameObject _starsParent;
+    public GameObject _pathMaster;
+    public GameObject _lifeformMaster;
+    public GameObject _starMaster;
+    public GameObject _societyMaster;
 
     System.Random random;
     public List<GameObject> stars;
+    
+    // prefabs
     public GameObject star;
     public GameObject path;
     public List<GameObject> lifeForms;
@@ -40,6 +43,8 @@ public class Galaxy : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        DioBehavior.setGalaxyMaster(transform);
+
         // initiate galaxy vars
         numStars = 2000;
         numBarStars = 125;
@@ -69,27 +74,32 @@ public class Galaxy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // random life tick
         tick = (int)(random.NextDouble() * baseLifeChance * lifeScale);
         
         // 1 / (baseLifeChance * lifeScale) of spawning life per tick
         if (tick == 1 && lifeForms.Count < maxLife)
         {
+            
             // randomly chooses a planet to spawn life on
             ranInt = random.Next(numStars + numBarStars);
             // checks if life is on the planet, if not spawns life
             if (stars[ranInt].GetComponent<Star>().lifeForms.Count == 0)
             {
+                /*
                 s1 = stars[ranInt];
                 if (debugOut == 1) Debug.Log("[Galaxy/Update]: New Life on Planet " + s1.GetComponent<Star>().name);
 
                 l1 = Instantiate(life);
                 l1.GetComponent<LifeForm>().addStar(s1.transform);
                 s1.GetComponent<Star>().addLife(l1.transform);
+                l1.transform.parent = _lifeformMaster.transform;
                 lifeForms.Add(l1);
+                */
             }
         }
-
+        
     }
 
     // FixedUpdate is called once per frame after Update. Use for physics.
@@ -154,7 +164,7 @@ public class Galaxy : MonoBehaviour
             s1.GetComponent<Star>().id = i;
 
             // sets the star as a child of the starsParent
-            s1.transform.parent = _starsParent.transform;
+            s1.transform.parent = _starMaster.transform;
 
             // stores star it in the stars array
             stars.Add(s1);
@@ -228,7 +238,7 @@ public class Galaxy : MonoBehaviour
             s1.GetComponent<Star>().id = (i + numStars);
 
             // set star as child of starParent
-            s1.transform.parent = _starsParent.transform;
+            s1.transform.parent = _starMaster.transform;
 
             // add star to stars list
             stars.Add(s1);
@@ -309,6 +319,7 @@ public class Galaxy : MonoBehaviour
                         p1.GetComponent<Path>().s2 = n1.transform;
                         if (s1.GetComponent<Star>().addPath(p1.transform) == -1) { if (debugOut == 1) Debug.Log("[Galaxy/createPaths]: Path already added"); }
                         if (n1.gameObject.GetComponent<Star>().addPath(p1.transform) == -1) { if (debugOut == 1) Debug.Log("[Galaxy/createPaths]: Path already added"); }
+                        p1.transform.parent = _pathMaster.transform;
                         paths.Add(p1.transform);
                         //p1.SetActive(false);
 
@@ -335,6 +346,7 @@ public class Galaxy : MonoBehaviour
                         p1.GetComponent<Path>().s2 = s1.transform;
                         s1.GetComponent<Star>().addPath(p1.transform);
                         n1.gameObject.GetComponent<Star>().addPath(p1.transform);
+                        p1.transform.parent = _pathMaster.transform;
                         paths.Add(p1.transform);
                         //p1.SetActive(false);
 

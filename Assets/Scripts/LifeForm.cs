@@ -38,8 +38,8 @@ public class LifeForm : MonoBehaviour
     public List<Transform> fleet;
     public List<GameObject> nearbySpecies;
     public List<Transform> nearbySys;
-    public List<Transform> intPaths;
-    public List<Transform> extPaths;
+    public HashSet<Transform> intPaths;
+    public HashSet<Transform> extPaths;
     public float spreadChance;
 
     GameObject s1;
@@ -57,6 +57,10 @@ public class LifeForm : MonoBehaviour
         spreadChance = 50F;
 
         numTraits = 7;
+
+        
+        intPaths = new HashSet<Transform>();
+        extPaths = new HashSet<Transform>();
 
         genName();
         rollStats();
@@ -206,7 +210,7 @@ public class LifeForm : MonoBehaviour
         int ind1 = random.Next(extPaths.Count);
         if (ind1 > 0)
         {
-            Transform spreadPath = extPaths[ind1];
+            Transform spreadPath = extPaths.ElementAt(ind1);
             Path pathScript = spreadPath.gameObject.GetComponent<Path>(); 
             if (debugOut == 1) Debug.Log("[Lifeform/spread]: Spreading along extPaths[" + ind1 + "]: " + pathScript.id);
 
@@ -295,9 +299,9 @@ public class LifeForm : MonoBehaviour
     {
         // create a ship at spawnStar with no destination
         s1 = Instantiate(ship);
-        s1.GetComponent<Ship>().transform.SetParent(this.gameObject.transform);
+        s1.GetComponent<Ship>().transform.SetParent(transform);
         s1.GetComponent<Ship>().lifeForm = transform;
-        s1.GetComponent<Ship>().transform.position = spawnStar.gameObject.transform.position;
+        s1.GetComponent<Ship>().transform.position = spawnStar.position;
         fleet.Add(s1.transform);
 
         return s1;

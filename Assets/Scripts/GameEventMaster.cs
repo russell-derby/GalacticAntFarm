@@ -12,8 +12,11 @@ using UnityEngine;
 public class GameEventMaster : MonoBehaviour
 {
     //debug - (0 : none, 1 - all, 2 - inits)
-    public int printDebug = 2;
+    public int printDebug = 1;
     public int delay = 0;
+
+    //common objects
+    public Transform activeSys;
 
     /* EventLibrary Dictionary
      * key: string - describes name of event
@@ -35,19 +38,28 @@ public class GameEventMaster : MonoBehaviour
         // debug
         if (printDebug >= 1) Debug.Log("[GameEventMaster/Start]: GameEventMaster Started");
 
+        activeSys = null;
+        DioBehavior.setGameEventMaster(transform);
+
         del0 tdel = test;
         tdel();
 
         
         List<(int, System.Delegate)> temp = new List<(int, System.Delegate)>();
-        del0 d1 = createGUI;
+        del1 d1 = createGUI;
         del2 d2 = modifyGUI; 
         del1 d3 = destroyGUI;
-        temp.Add((0, d1));
+        temp.Add((1, d1));
         temp.Add((2, d2));
         temp.Add((1, d3));
 
         EventLibrary.Add("test", temp);
+
+        List<(int, System.Delegate)> sysCam = new List<(int, System.Delegate)>();
+        del2 d4 = modifyGUI;
+        sysCam.Add((2, d4));
+
+        EventLibrary.Add("ActivateSystemCamera", sysCam);
     }
 
     int test() { Debug.Log("[GameEventMaster/Test]: Test0"); return 1; }
@@ -70,8 +82,9 @@ public class GameEventMaster : MonoBehaviour
         if (delay != -1) delay++;
     }
 
-    int execEvent(string funcKey, List<List<object>> eventParams)
+    public int execEvent(string funcKey, List<List<object>> eventParams)
     {
+        Debug.Log("[GameEventMaster/execEvent]: Executing Event!");
         //make sure func key is in func dictionary
         if (!EventLibrary.ContainsKey(funcKey)) 
         {
@@ -129,15 +142,44 @@ public class GameEventMaster : MonoBehaviour
     /********** Event Master Functions **********/
 
     /*** GUI Functions ***/ 
-    int createGUI()
+    int createGUI(object keyword)
     {
         // GUI Template // Modifiers
         Debug.Log("[GameEventMaster/createGui]: hi - 1");
+
+        switch ((string)keyword)
+        {
+            case "SystemCamera":
+                
+                break;
+            default:
+                break;
+        }
+
         return 1;
     }
-    int modifyGUI(object xscale, object name)
+
+    int createGUI(object keyword, object position)
     {
-        Debug.Log("[GameEventMaster/modifyGui]: hi - 2 xscale (" + (float) xscale +") - name (" + (string) name + ")");   
+        // GUI Template // Modifiers
+        Debug.Log("[GameEventMaster/createGui]: hi - 1");
+
+        return 1;
+    }
+
+    int modifyGUI(object guiName, object system)
+    {
+        //Debug.Log("[GameEventMaster/modifyGui]: hi - 2 xscale (" + (float) xscale +") - name (" + (string) name + ")");
+        if ((string)guiName == "SystemCamera") { Debug.Log("Nice! :-)"); }
+
+        if (activeSys != null)
+        {
+            activeSys.GetComponent<PlanetarySystem>().disableSystem();
+        }
+        
+        activeSys = (Transform)system;
+        activeSys.GetComponent<PlanetarySystem>().enableSystem();
+
         return 1;
     }
     int destroyGUI(object test)

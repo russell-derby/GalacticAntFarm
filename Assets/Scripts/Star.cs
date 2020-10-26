@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Star : MonoBehaviour
 {
     //debug - (0 : none, 1 - all, 2 - inits)
-    public int debugOut = 2;
+    public int debugOut = 1;
     
     System.Random random;
     public GameObject starGraphic;
@@ -102,20 +102,30 @@ public class Star : MonoBehaviour
         rend.color = c1;
     }
 
-    public void setLocalScale(Vector2 scale)
+    public void setSpriteScale(Vector2 scale)
     {
-        transform.localScale = scale;
+        starGraphic.transform.localScale = scale;
     }
 
     public void createSystem()
     {
         system = Instantiate(sysPrefab).transform;
-        if (debugOut == 1) Debug.Log("[Star/createSystem]: New System!");
+        if (debugOut == 1) Debug.Log("[Star/createSystem]: New System! x:" + system.position.x + " y:" + system.position.y);
 
         sysScript = system.gameObject.GetComponent<PlanetarySystem>();
-        system.SetParent(this.gameObject.transform);
+        system.SetParent(transform);
         sysScript.sysName = starName;
-        sysScript.star = this.gameObject;
+        sysScript.star = gameObject;
+    }
+
+    public void enableSystem()
+    {
+        sysScript.enableSystem();
+    }
+
+    public void disableSystem()
+    {
+        sysScript.disableSystem();
     }
 
     public void addLife(Transform l1)
@@ -127,7 +137,7 @@ public class Star : MonoBehaviour
             createSystem();
             sysScript.disableSystem();
             setColor(l1.gameObject.GetComponent<LifeForm>().color);
-            setLocalScale(new Vector2(3f,3f));
+            setSpriteScale(new Vector2(3f,3f));
             //transform.localScale = new Vector3(2.5F, 2.5F, 0.5F);
         }
         else { if (debugOut == 1) Debug.Log("[Star/addLife]: Life rejected from star!" ); }

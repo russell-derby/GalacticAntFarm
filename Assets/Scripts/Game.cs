@@ -8,21 +8,14 @@ public class Game : MonoBehaviour
     //debug - (0 : none, 1 - all, 2 - inits)
     public int debugOut = 2;
 
-    // master
-    public GameObject _app;
-    public GameObject uiMaster;
-    public GameObject soundMaster;
-    public GameObject db;
-    public GameObject gameEventMaster;
-    public GameObject galaxy;
+    public GameObject GameEventMasterTemp;
+    public GameObject GalaxyTemp;
 
     // cache
     public List<GameObject> activeSystems;
 
     // operational vars
-    public Transform cam1;
-    public Transform cam_star1;
-    public Transform cam_sys1;
+    public GameObject temp;
 
     System.Random random = new System.Random();
 
@@ -31,30 +24,26 @@ public class Game : MonoBehaviour
     {
         // Find and Connect to Application Master
         //_app = GameObject.Find("_app");
-
+        
+        DioBehavior.setGameMaster(transform);
+        
         // Instantiate Game Event Master
-        gameEventMaster = Instantiate(gameEventMaster);
+        temp = Instantiate(GameEventMasterTemp);
+        temp.transform.parent = transform;
+        DioBehavior.setGameEventMaster(temp.transform);
 
         // Instantiate Galaxy
-        galaxy = Instantiate(galaxy);
+        temp = Instantiate(GalaxyTemp);
+        temp.transform.parent = transform;
+        DioBehavior.setGalaxyMaster(temp.transform);
 
         // Run Create Stars and Create Path
-        galaxy.GetComponent<Galaxy>().createStars();
-        galaxy.GetComponent<Galaxy>().Invoke("createPaths", 1f);
-        cam1 = null;
+        DioBehavior._Galaxy.createStars();
+        DioBehavior._Galaxy.Invoke("createPaths", 1f);
 
         if (debugOut >= 1) Debug.Log("[Game/Start]: Game Started");
     }
 
     // Update is called once per frame
     //void Update() { }
-
-
-    // Create system cam creates mini planet cam. Called by clicked-on stars.
-    public void createSystemCam(Transform star1)
-    {
-        if (debugOut == 1) Debug.Log("[Game/createSystemCam]: Starting Sys Cam");
-        // Game Calls _app to create System Cam through UI Master
-        _app.GetComponent<_app>().uiMaster.GetComponent<UIMaster>().startSysCam(star1);
-    }
 }

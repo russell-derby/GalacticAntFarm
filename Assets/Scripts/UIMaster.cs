@@ -23,15 +23,15 @@ public class UIMaster : MonoBehaviour
     public GameObject gameCanvas;
     public GameObject gameBGCam;
     public GameObject gameBGCanvas;
-    public GameObject sysCam;
+    //public GameObject sysCam;
 
     // Variables 
     public List<Transform> active;
-    System.Random random;
 
     // Operating Variables
-    Transform sysStar;
+    //Transform sysStar;
     public GameObject db;
+    System.Random rand;
 
     // Start is called before the first frame update
     void Awake()
@@ -39,11 +39,17 @@ public class UIMaster : MonoBehaviour
         //initate list of active components
         active = new List<Transform>();
         
-        //seed random
-        random = new System.Random();
-        
         //set star pointer = null
-        sysStar = null;
+        //sysStar = null;
+
+        Debug.Log("UI Master Awake");
+    }
+    
+    void Start()
+    {       
+        //seed random
+        rand = new System.Random(GetInstanceID());
+        Debug.Log("UI Master Start");
     }
 
     /**************  Master Functions **************/
@@ -120,43 +126,13 @@ public class UIMaster : MonoBehaviour
     // Start System Cam
     public void startSysCam(Transform s1)
     {
-        if (debugOut == 1) Debug.Log("[UI Master/startSysCam]: Receiving Star with ID " + s1.GetComponent<Star>().id);
-        if (!sysCam)
-        {
-            sysCam = Instantiate(sysCamPref);
-            sysCam.transform.parent = transform;
-            sysCam.GetComponent<Camera>().rect = new Rect(0.717F, 0.03F, 0.27F, 0.36F);
-        }
 
-        if (sysStar != null)
-        {
-            if (sysStar.GetComponent<Star>().id == s1.GetComponent<Star>().id)
-            {
-                if (debugOut == 1) Debug.Log("[UI Master/startSysCam]: Star Cam Already Active");
-            }
-            else
-            {
-                if (debugOut == 1) Debug.Log("[UI Master/startSysCam]: Deactivating System");
-                sysStar.GetComponent<Star>().system.GetComponent<PlanetarySystem>().disableSystem();
-            }
-        }
-
-        sysCam.GetComponent<Camera>().backgroundColor = new Color((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble());
-        sysStar = s1;
-        sysStar.GetComponent<Star>().system.GetComponent<PlanetarySystem>().enableSystem();
     }
 
     // Destroy System Cam
     void destroySysCam()
     {
-        if (sysCam)
-        {
-            
-        }
-        else
-        {
-            if (debugOut == 1) Debug.Log("[UIMaster/destroySysCam]: No Sys Cam Active");
-        }
+
     }
 
     /*************  End Game Functions **************/

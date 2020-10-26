@@ -9,10 +9,11 @@ public class _app : MonoBehaviour
     //debug - (0 : none, 1 - all, 2 - inits)
     public int debugOut = 1;
 
+    public Transform UIMasterTemp;
+    public Transform DatabaseTemp;
+    public Transform SoundMasterTemp;
+
     //master objects
-    public GameObject uiMaster;
-    public GameObject database;
-    public GameObject eventSystem;
 
     //public Scene mainMenu;
     //public Scene game;
@@ -25,6 +26,12 @@ public class _app : MonoBehaviour
 
     void Start()
     {
+        //set up DioBehavior variables
+        DioBehavior.setAppMaster(transform);
+        DioBehavior.setUIMaster(UIMasterTemp);
+        DioBehavior.setDBMaster(DatabaseTemp);
+        DioBehavior.setSoundMaster(SoundMasterTemp);
+
         //load game scene
         startMainMenu();
     }
@@ -32,7 +39,7 @@ public class _app : MonoBehaviour
     public void startMainMenu()
     {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
-        uiMaster.GetComponent<UIMaster>().startMainMenu();
+        DioBehavior._UIMaster.startMainMenu();
         if (debugOut == 1) Debug.Log("[App/startMainMenu]: Menu Loaded");
     }
 
